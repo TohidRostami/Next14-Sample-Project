@@ -1,4 +1,4 @@
-import Product from "../Models/Product";
+import Product from "../Types/Product";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
 export function allProducts() {

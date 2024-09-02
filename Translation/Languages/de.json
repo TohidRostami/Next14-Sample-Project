@@ -1,0 +1,21 @@
+{
+  "products": "Produkte",
+  "id": "Ausweis",
+  "title": "Titel",
+  "price": "Preis",
+  "category": "Kategorie",
+  "image": "Bild",
+  "edit": "Bearbeiten",
+  "delete": "Löschen",
+  "addProduct": "Produkt hinzufügen",
+  "rowPerPage": "Zeilen pro Seite",
+  "light": "Licht",
+  "dark": "Dunkel",
+  "editProduct": "Produkt bearbeiten",
+  "back": "Zurück",
+  "submitEdit": "Bearbeiten",
+  "deleteProduct": "Produkt löschen",
+  "deleteQuestion": "Möchten Sie das Produkt {{number}} wirklich löschen?",
+  "tablePerRow": "Zeilen pro Seite:",
+  "filterTextBox": "{{count}} Datensätze durchsuchen..."
+}

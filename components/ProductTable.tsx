@@ -12,6 +12,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditPage from "./EditModal";
 import DeleteModal from "./DeleteModal";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+
+import { useTranslation } from "react-i18next";
 
 import {
   Box,
@@ -25,7 +29,8 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
-import Product from "@/Models/Product";
+import Product from "@/Types/Product";
+import { t } from "i18next";
 
 function DefaultColumnFilter({
   column: { filterValue, preFilteredRows, setFilter },
@@ -45,7 +50,7 @@ function DefaultColumnFilter({
       onChange={(e) => {
         setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
       }}
-      placeholder={`Search ${count} records...`}
+      placeholder={t("filterTextBox", { count: count }) as string}
       size="small"
     />
   );
@@ -59,9 +64,11 @@ export default function ProductTable() {
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
 
+  const { t } = useTranslation();
+
   const openModal = (id: number) => {
     setProdId(id);
-    setEditModal(true);
+    setEditModal(!editModal);
   };
 
   const closeModal = () => {
@@ -82,19 +89,19 @@ export default function ProductTable() {
   const columns = React.useMemo(
     () => [
       {
-        Header: "Id",
+        Header: t("id"),
         accessor: "id", // accessor is the "key" in the data
         Filter: DefaultColumnFilter,
       },
       {
-        Header: "Title",
+        Header: t("title"),
         accessor: "title",
         Filter: DefaultColumnFilter,
         filter: () => {},
       },
       ,
       {
-        Header: "Price",
+        Header: t("price"),
         accessor: "price",
         Filter: DefaultColumnFilter,
         Cell: ({ value }: { value: string }) => {
@@ -103,13 +110,13 @@ export default function ProductTable() {
       },
       ,
       {
-        Header: "Category",
+        Header: t("category"),
         accessor: "category",
         Filter: DefaultColumnFilter,
       },
 
       {
-        Header: "Edit",
+        Header: t("edit"),
         accessor: "edit",
         disableFilters: true,
         disableSortBy: true,
@@ -124,7 +131,7 @@ export default function ProductTable() {
       },
       ,
       {
-        Header: "Delete",
+        Header: t("delete"),
         accessor: "delete",
         disableSortBy: true,
         disableFilters: true,
@@ -138,7 +145,7 @@ export default function ProductTable() {
         ),
       },
     ],
-    []
+    [t]
   );
 
   const [page, setPage] = React.useState(0);
@@ -177,8 +184,7 @@ export default function ProductTable() {
 
   return (
     <>
-      <Title>Products</Title>
-
+      <Title>{t("products")}</Title>
       <Table
         {...getTableProps()}
         size="small"
@@ -207,11 +213,15 @@ export default function ProductTable() {
                     >
                       {column.render("Header")}
                       <span>
-                        {column.isSorted
-                          ? column.isSortedDesc
-                            ? " 🔽"
-                            : " 🔼"
-                          : ""}
+                        {column.isSorted ? (
+                          column.isSortedDesc ? (
+                            <ArrowUpwardIcon sx={{ fontSize: 20 }} />
+                          ) : (
+                            <ArrowDownwardIcon sx={{ fontSize: 20 }} />
+                          )
+                        ) : (
+                          ""
+                        )}
                       </span>
                     </div>
                     <div>
@@ -269,8 +279,8 @@ export default function ProductTable() {
         }}
       >
         <Link href="/createpost">
-          <Button variant="contained" sx={{ marginLeft: "16px" }}>
-            Add Product
+          <Button type="button" variant="contained" sx={{ marginLeft: "16px" }}>
+            {t("addProduct")}
           </Button>
         </Link>
 
@@ -282,25 +292,22 @@ export default function ProductTable() {
           rowsPerPage={rowsPerPage}
           rowsPerPageOptions={[5, 10, 15, 20]}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={t("tablePerRow")}
         />
       </Box>
-      {editModal ? (
+      {editModal && (
         <EditPage
           editModal={editModal}
           product={(data as Product[])[prodId - 1]}
           handleClose={closeModal}
         />
-      ) : (
-        ""
       )}
-      {deleteModal ? (
+      {deleteModal && (
         <DeleteModal
           product={(data as Product[])[prodId - 1]}
           deleteModal={deleteModal}
           handleClose={closeDeleteModal}
         />
-      ) : (
-        ""
       )}
     </>
   );

@@ -9,13 +9,13 @@ import Box from "@mui/material/Box";
 import EditIcon from "@mui/icons-material/Edit";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { getSingleProduct, mutateProd } from "@/functions/functions";
 import { Modal } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
-import Product from "@/Models/Product";
+import Product from "@/Types/Product";
+import fields from "../Data/fields";
 
-const defaultTheme = createTheme();
+import { useTranslation } from "react-i18next";
 
 const style = {
   position: "absolute" as "absolute",
@@ -42,6 +42,8 @@ export default function EditModal({
 }) {
   const mutation = mutateProd(product);
 
+  const { t } = useTranslation();
+
   const { handleSubmit, register } = useForm<Product>();
 
   const submitHandler: SubmitHandler<Product> = (data) => {
@@ -59,104 +61,66 @@ export default function EditModal({
       aria-describedby="parent-modal-description"
     >
       <Box sx={{ ...style }}>
-        <ThemeProvider theme={defaultTheme}>
-          <Container component="main" maxWidth="xs">
-            <CssBaseline />
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+              <EditIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              {t("editProduct")}
+            </Typography>
             <Box
-              sx={{
-                marginTop: 8,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
+              component="form"
+              noValidate
+              sx={{ mt: 3 }}
+              onSubmit={handleSubmit(submitHandler)}
             >
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                <EditIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Edit Product
-              </Typography>
-              <Box
-                component="form"
-                noValidate
-                sx={{ mt: 3 }}
-                onSubmit={handleSubmit(submitHandler)}
-              >
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="title"
-                      label="Title"
-                      defaultValue={product?.title}
-                      autoFocus
-                      {...register("title")}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="price"
-                      label="Price"
-                      defaultValue={product?.price}
-                      {...register("price")}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      id="description"
-                      label="Description"
-                      defaultValue={product?.description}
-                      {...register("description")}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      label="Category"
-                      id="category"
-                      defaultValue={product?.category}
-                      {...register("category")}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      label="Image"
-                      id="image"
-                      defaultValue={product?.image}
-                      {...register("image")}
-                    />
-                  </Grid>
-                </Grid>
-                <Grid xs={7}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2, mr: 3, ml: 3, pr: 6, pl: 6 }}
-                    onClick={handleClose}
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="success"
-                    sx={{ mt: 3, mb: 2 }}
-                  >
-                    Submit Edit
-                  </Button>
-                </Grid>
-              </Box>
+              <Grid container spacing={2}>
+                {fields.map((field) => {
+                  return (
+                    <Grid item xs={12} key={field.id}>
+                      <TextField
+                        required={field.required}
+                        fullWidth
+                        id={field.id}
+                        label={t(field.label)}
+                        defaultValue={product?.[field.register]}
+                        autoFocus={field.autoFocus}
+                        {...register(field.register)}
+                      />
+                    </Grid>
+                  );
+                })}
+              </Grid>
+              <Grid xs={7}>
+                <Button
+                  type="button"
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2, mr: 3, ml: 3, pr: 6, pl: 6 }}
+                  onClick={handleClose}
+                >
+                  {t("back")}
+                </Button>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="success"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  {t("submitEdit")}
+                </Button>
+              </Grid>
             </Box>
-          </Container>
-        </ThemeProvider>
+          </Box>
+        </Container>
       </Box>
     </Modal>
   );

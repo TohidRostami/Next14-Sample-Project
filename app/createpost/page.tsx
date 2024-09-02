@@ -2,23 +2,22 @@
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { createProduct } from "@/functions/functions";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
-import Product from "@/Models/Product";
-
-const defaultTheme = createTheme();
+import Product from "@/Types/Product";
+import { useTranslation } from "react-i18next";
+import fields from "@/Data/fields";
 
 export default function CreatePost() {
+  const { t } = useTranslation();
   const router = useRouter();
 
   const { handleSubmit, register } = useForm<Product>();
@@ -30,6 +29,10 @@ export default function CreatePost() {
       router.push("/");
     },
   });
+
+  const backHandler = () => {
+    router.push("/");
+  };
 
   const submitHandler: SubmitHandler<Product> = (data) => {
     const { title, price, category, description, image } = data;
@@ -51,88 +54,63 @@ export default function CreatePost() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 4,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <AddIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          {t("addProduct")}
+        </Typography>
         <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+          component="form"
+          noValidate
+          sx={{ mt: 3 }}
+          onSubmit={handleSubmit(submitHandler)}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <AddIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Add Product
-          </Typography>
-          <Box
-            component="form"
-            noValidate
+          <Grid container spacing={2}>
+            {fields.map((field) => {
+              return (
+                <Grid item xs={12} key={field.id}>
+                  <TextField
+                    {...register(field.register)}
+                    required={field.required}
+                    fullWidth
+                    id={field.id}
+                    label={t(field.label)}
+                    autoFocus={field.autoFocus}
+                  />
+                </Grid>
+              );
+            })}
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="success"
             sx={{ mt: 3 }}
-            onSubmit={handleSubmit(submitHandler)}
           >
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  {...register("title")}
-                  required
-                  fullWidth
-                  id="title"
-                  label="Title"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="price"
-                  label="Price"
-                  {...register("price")}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="description"
-                  label="Description"
-                  {...register("description")}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Category"
-                  id="category"
-                  {...register("category")}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Image"
-                  id="image"
-                  {...register("image")}
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Submit Edit
-            </Button>
-          </Box>
+            {t("addProduct")}
+          </Button>
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 1, mb: 2 }}
+            onClick={backHandler}
+          >
+            {t("back")}
+          </Button>
         </Box>
-      </Container>
-    </ThemeProvider>
+      </Box>
+    </Container>
   );
 }
