@@ -10,7 +10,7 @@ import { useTable, useSortBy, useFilters } from "react-table";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import EditPage from "./EditModal";
+import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
@@ -97,7 +97,6 @@ export default function ProductTable() {
         Header: t("title"),
         accessor: "title",
         Filter: DefaultColumnFilter,
-        filter: () => {},
       },
       ,
       {
@@ -296,7 +295,7 @@ export default function ProductTable() {
         />
       </Box>
       {editModal && (
-        <EditPage
+        <EditModal
           editModal={editModal}
           product={(data as Product[])[prodId - 1]}
           handleClose={closeModal}

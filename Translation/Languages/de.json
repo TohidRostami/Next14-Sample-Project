@@ -4,6 +4,7 @@
   "title": "Titel",
   "price": "Preis",
   "category": "Kategorie",
+  "description": "Beschreibung",
   "image": "Bild",
   "edit": "Bearbeiten",
   "delete": "Löschen",

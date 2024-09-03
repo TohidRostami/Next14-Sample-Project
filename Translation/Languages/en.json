@@ -4,6 +4,7 @@
   "title": "Title",
   "price": "Price",
   "category": "Category",
+  "description": "Description",
   "image": "Image",
   "edit": "Edit",
   "delete": "Delete",

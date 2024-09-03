@@ -52,6 +52,7 @@ export default function EditModal({
     });
     mutation.mutate(data);
     console.log("After Patch: ", data);
+    handleClose();
   };
 
   return (
