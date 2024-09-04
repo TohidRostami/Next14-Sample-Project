@@ -3,12 +3,14 @@
 import Title from "./Title";
 
 import { allProducts } from "@/functions/functions";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTable, useSortBy, useFilters } from "react-table";
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import ReplayIcon from "@mui/icons-material/Replay";
 
 import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
@@ -30,31 +32,6 @@ import {
   TextField,
 } from "@mui/material";
 import Product from "@/Types/Product";
-import { t } from "i18next";
-
-function DefaultColumnFilter({
-  column: { filterValue, preFilteredRows, setFilter },
-}: {
-  column: {
-    filterValue: any;
-    preFilteredRows: any;
-    setFilter: (filterValue: any) => void;
-  };
-}) {
-  const count = preFilteredRows.length;
-
-  return (
-    <TextField
-      variant="outlined"
-      value={filterValue || ""}
-      onChange={(e) => {
-        setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
-      }}
-      placeholder={t("filterTextBox", { count: count }) as string}
-      size="small"
-    />
-  );
-}
 
 export default function ProductTable() {
   const { data } = allProducts();
@@ -85,6 +62,77 @@ export default function ProductTable() {
     setProdId(0);
     setDeleteModal(false);
   };
+
+  // function DefaultColumnFilter({
+  //   column: { filterValue, preFilteredRows, setFilter },
+  // }: {
+  //   column: {
+  //     filterValue: any;
+  //     preFilteredRows: any;
+  //     setFilter: (filterValue: any) => void;
+  //   };
+  // }) {
+  //   const count = preFilteredRows.length;
+
+  //   return (
+  //     <TextField
+  //       variant="outlined"
+  //       value={filterValue || ""}
+  //       onChange={(e) => {
+  //         setInputFilter(e.target.value); // Set undefined to remove the filter entirely
+  //         console.log(inputFilter);
+  //       }}
+  //       placeholder={t("filterTextBox", { count: count }) as string}
+  //       size="small"
+  //     />
+  //   );
+  // }
+
+  function DefaultColumnFilter({
+    column: { preFilteredRows, setFilter },
+  }: {
+    column: {
+      preFilteredRows: any;
+      setFilter: (filterValue: any) => void;
+    };
+  }) {
+    const [inputValue, setInputValue] = useState<string>(""); // Local state for the input value
+    const count = preFilteredRows.length;
+
+    const handleApplyFilter = () => {
+      setFilter(inputValue); // Apply the filter using the local state value
+    };
+    const handleResetFilter = () => {
+      setInputValue("");
+      setFilter(""); // Reset the filter
+    };
+    return (
+      <Box style={{ display: "flex", alignItems: "center" }}>
+        <TextField
+          variant="outlined"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)} // Update the local state
+          placeholder={t("filterTextBox", { count: count }) as string}
+          size="small"
+        />
+        <Box
+          sx={{
+            alignItems: "center",
+            justifyContent: "center",
+            width: "10px",
+            marginRight: "20px",
+          }}
+        >
+          <IconButton color="primary" onClick={handleApplyFilter}>
+            <FilterAltIcon />
+          </IconButton>
+          <IconButton color="primary" onClick={handleResetFilter}>
+            <ReplayIcon />
+          </IconButton>
+        </Box>
+      </Box>
+    );
+  }
 
   const columns = React.useMemo(
     () => [
