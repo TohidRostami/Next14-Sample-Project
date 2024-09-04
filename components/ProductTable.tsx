@@ -88,50 +88,63 @@ export default function ProductTable() {
   //   );
   // }
 
+  // function DefaultColumnFilter({
+  //   column: { preFilteredRows, setFilter },
+  // }: {
+  //   column: {
+  //     preFilteredRows: any;
+  //     setFilter: (filterValue: any) => void;
+  //   };
+  // }) {
+  //   const [inputValue, setInputValue] = useState<string>(""); // Local state for the input value
+  //   const count = preFilteredRows.length;
+
+  //   const handleApplyFilter = () => {
+  //     console.log(inputValue);
+  //     setFilter(inputValue); // Apply the filter using the local state value
+  //   };
+  //   const handleResetFilter = () => {
+  //     setInputValue("");
+  //     setFilter(""); // Reset the filter
+  //   };
+  //   return (
+  //     <Box style={{ display: "flex", alignItems: "center" }}>
+  //       <TextField
+  //         variant="outlined"
+  //         value={inputValue}
+  //         onChange={(e) => setInputValue(e.target.value)} // Update the local state
+  //         placeholder={t("filterTextBox", { count: count }) as string}
+  //         size="small"
+  //       />
+  //       <Box
+  //         sx={{
+  //           alignItems: "center",
+  //           justifyContent: "center",
+  //           width: "10px",
+  //           marginRight: "20px",
+  //         }}
+  //       >
+  //         <IconButton color="primary" onClick={handleApplyFilter}>
+  //           <FilterAltIcon />
+  //         </IconButton>
+  //         <IconButton color="primary" onClick={handleResetFilter}>
+  //           <ReplayIcon />
+  //         </IconButton>
+  //       </Box>
+  //     </Box>
+  //   );
+  // }
+
   function DefaultColumnFilter({
-    column: { preFilteredRows, setFilter },
+    column: { id, preFilteredRows, setFilter },
   }: {
     column: {
+      id: string;
       preFilteredRows: any;
       setFilter: (filterValue: any) => void;
     };
   }) {
-    const [inputValue, setInputValue] = useState<string>(""); // Local state for the input value
-    const count = preFilteredRows.length;
-
-    const handleApplyFilter = () => {
-      setFilter(inputValue); // Apply the filter using the local state value
-    };
-    const handleResetFilter = () => {
-      setInputValue("");
-      setFilter(""); // Reset the filter
-    };
-    return (
-      <Box style={{ display: "flex", alignItems: "center" }}>
-        <TextField
-          variant="outlined"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)} // Update the local state
-          placeholder={t("filterTextBox", { count: count }) as string}
-          size="small"
-        />
-        <Box
-          sx={{
-            alignItems: "center",
-            justifyContent: "center",
-            width: "10px",
-            marginRight: "20px",
-          }}
-        >
-          <IconButton color="primary" onClick={handleApplyFilter}>
-            <FilterAltIcon />
-          </IconButton>
-          <IconButton color="primary" onClick={handleResetFilter}>
-            <ReplayIcon />
-          </IconButton>
-        </Box>
-      </Box>
-    );
+    return null;
   }
 
   const columns = React.useMemo(
@@ -176,7 +189,7 @@ export default function ProductTable() {
           </IconButton>
         ),
       },
-      ,
+
       {
         Header: t("delete"),
         accessor: "delete",
@@ -218,16 +231,47 @@ export default function ProductTable() {
 
   const tableData = React.useMemo(() => (data ? data : []), [data]);
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(
-      {
-        columns,
-        data: tableData,
-        defaultColumn: { Filter: DefaultColumnFilter },
-      },
-      useFilters,
-      useSortBy // This adds sorting functionality
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    setAllFilters,
+  } = useTable(
+    {
+      columns,
+      data: tableData,
+      defaultColumn: { Filter: DefaultColumnFilter },
+    },
+    useFilters,
+    useSortBy // This adds sorting functionality
+  );
+
+  const [filterValues, setFilterValues] = useState<{ [key: string]: string }>(
+    {}
+  ); // State for all filter values
+
+  // Handle filter change for individual columns
+  const handleFilterChange = (columnId: string, value: string) => {
+    setFilterValues((prev) => ({
+      ...prev,
+      [columnId]: value,
+    }));
+  };
+
+  // Apply all filters
+  const handleApplyAllFilters = () => {
+    setAllFilters(
+      Object.entries(filterValues).map(([id, value]) => ({ id, value }))
     );
+  };
+
+  // Reset all filters
+  const handleResetAllFilters = () => {
+    setFilterValues({});
+    setAllFilters([]);
+  };
 
   return (
     <>
@@ -251,7 +295,7 @@ export default function ProductTable() {
               <TableRow key={`header-group-${index}`}>
                 {headerGroup.headers.map((column) => (
                   <TableCell key={column.id}>
-                    <div
+                    <Box
                       {...column.getSortByToggleProps()}
                       style={{
                         display: "flex",
@@ -270,12 +314,70 @@ export default function ProductTable() {
                           ""
                         )}
                       </span>
-                    </div>
-                    <div>
+                    </Box>
+                    {/* <Box>
                       {column.canFilter ? column.render("Filter") : null}
-                    </div>
+                    </Box> */}
+                    <Box>
+                      {column.canFilter ? (
+                        <TextField
+                          variant="outlined"
+                          value={filterValues[column.id] || ""}
+                          onChange={(e) =>
+                            handleFilterChange(column.id, e.target.value)
+                          }
+                          placeholder={
+                            t("filterTextBox", {
+                              count: tableData.length,
+                            }) as string
+                          }
+                          size="small"
+                        />
+                      ) : null}
+                    </Box>
                   </TableCell>
                 ))}
+                {index === 0 && (
+                  <TableCell>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <IconButton
+                        color="primary"
+                        onClick={handleApplyAllFilters}
+                      >
+                        <FilterAltIcon />
+                      </IconButton>
+                      <IconButton
+                        color="primary"
+                        onClick={handleResetAllFilters}
+                      >
+                        <ReplayIcon />
+                      </IconButton>
+                    </Box>
+                  </TableCell>
+                )}
+                {/* <TableCell>
+                  <Box
+                    sx={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "10px",
+                      marginRight: "20px",
+                    }}
+                  >
+                    <IconButton color="primary">
+                      <FilterAltIcon />
+                    </IconButton>
+                    <IconButton color="primary">
+                      <ReplayIcon />
+                    </IconButton>
+                  </Box>
+                </TableCell> */}
               </TableRow>
             )
           )}
