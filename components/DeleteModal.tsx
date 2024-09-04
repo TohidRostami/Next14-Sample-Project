@@ -72,7 +72,7 @@ export default function DeleteModal({
             </Typography>
 
             <Typography variant="h6" align="center">
-              {t("deleteQuestion",{ number:product.id})}
+              {t("deleteQuestion", { number: product.id })}
             </Typography>
 
             <Box component="form" noValidate sx={{ mt: 3 }}>

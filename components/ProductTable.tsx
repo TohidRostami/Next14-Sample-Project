@@ -3,7 +3,7 @@
 import Title from "./Title";
 
 import { allProducts } from "@/functions/functions";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useTable, useSortBy, useFilters } from "react-table";
 
@@ -32,6 +32,8 @@ import {
   TextField,
 } from "@mui/material";
 import Product from "@/Types/Product";
+import TableHeader from "./TableHeader";
+import TableBodys from "./TableBody";
 
 export default function ProductTable() {
   const { data } = allProducts();
@@ -62,78 +64,6 @@ export default function ProductTable() {
     setProdId(0);
     setDeleteModal(false);
   };
-
-  // function DefaultColumnFilter({
-  //   column: { filterValue, preFilteredRows, setFilter },
-  // }: {
-  //   column: {
-  //     filterValue: any;
-  //     preFilteredRows: any;
-  //     setFilter: (filterValue: any) => void;
-  //   };
-  // }) {
-  //   const count = preFilteredRows.length;
-
-  //   return (
-  //     <TextField
-  //       variant="outlined"
-  //       value={filterValue || ""}
-  //       onChange={(e) => {
-  //         setInputFilter(e.target.value); // Set undefined to remove the filter entirely
-  //         console.log(inputFilter);
-  //       }}
-  //       placeholder={t("filterTextBox", { count: count }) as string}
-  //       size="small"
-  //     />
-  //   );
-  // }
-
-  // function DefaultColumnFilter({
-  //   column: { preFilteredRows, setFilter },
-  // }: {
-  //   column: {
-  //     preFilteredRows: any;
-  //     setFilter: (filterValue: any) => void;
-  //   };
-  // }) {
-  //   const [inputValue, setInputValue] = useState<string>(""); // Local state for the input value
-  //   const count = preFilteredRows.length;
-
-  //   const handleApplyFilter = () => {
-  //     console.log(inputValue);
-  //     setFilter(inputValue); // Apply the filter using the local state value
-  //   };
-  //   const handleResetFilter = () => {
-  //     setInputValue("");
-  //     setFilter(""); // Reset the filter
-  //   };
-  //   return (
-  //     <Box style={{ display: "flex", alignItems: "center" }}>
-  //       <TextField
-  //         variant="outlined"
-  //         value={inputValue}
-  //         onChange={(e) => setInputValue(e.target.value)} // Update the local state
-  //         placeholder={t("filterTextBox", { count: count }) as string}
-  //         size="small"
-  //       />
-  //       <Box
-  //         sx={{
-  //           alignItems: "center",
-  //           justifyContent: "center",
-  //           width: "10px",
-  //           marginRight: "20px",
-  //         }}
-  //       >
-  //         <IconButton color="primary" onClick={handleApplyFilter}>
-  //           <FilterAltIcon />
-  //         </IconButton>
-  //         <IconButton color="primary" onClick={handleResetFilter}>
-  //           <ReplayIcon />
-  //         </IconButton>
-  //       </Box>
-  //     </Box>
-  //   );
-  // }
 
   function DefaultColumnFilter({
     column: { id, preFilteredRows, setFilter },
@@ -281,107 +211,11 @@ export default function ProductTable() {
         size="small"
         sx={{ border: 1, borderColor: "grey.300" }}
       >
-        <TableHead>
-          {headerGroups.map(
-            (
-              headerGroup: {
-                getHeaderGroupProps: () => React.JSX.IntrinsicAttributes &
-                  React.ClassAttributes<HTMLTableRowElement> &
-                  React.HTMLAttributes<HTMLTableRowElement>;
-                headers: any[];
-              },
-              index: number
-            ) => (
-              <TableRow key={`header-group-${index}`}>
-                {headerGroup.headers.map((column) => (
-                  <TableCell key={column.id}>
-                    <Box
-                      {...column.getSortByToggleProps()}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      {column.render("Header")}
-                      <span>
-                        {column.isSorted ? (
-                          column.isSortedDesc ? (
-                            <ArrowUpwardIcon sx={{ fontSize: 20 }} />
-                          ) : (
-                            <ArrowDownwardIcon sx={{ fontSize: 20 }} />
-                          )
-                        ) : (
-                          ""
-                        )}
-                      </span>
-                    </Box>
-                    {/* <Box>
-                      {column.canFilter ? column.render("Filter") : null}
-                    </Box> */}
-                    <Box>
-                      {column.canFilter ? (
-                        <TextField
-                          variant="outlined"
-                          value={filterValues[column.id] || ""}
-                          onChange={(e) =>
-                            handleFilterChange(column.id, e.target.value)
-                          }
-                          placeholder={
-                            t("filterTextBox", {
-                              count: tableData.length,
-                            }) as string
-                          }
-                          size="small"
-                        />
-                      ) : null}
-                    </Box>
-                  </TableCell>
-                ))}
-                {index === 0 && (
-                  <TableCell>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <IconButton
-                        color="primary"
-                        onClick={handleApplyAllFilters}
-                      >
-                        <FilterAltIcon />
-                      </IconButton>
-                      <IconButton
-                        color="primary"
-                        onClick={handleResetAllFilters}
-                      >
-                        <ReplayIcon />
-                      </IconButton>
-                    </Box>
-                  </TableCell>
-                )}
-                {/* <TableCell>
-                  <Box
-                    sx={{
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: "10px",
-                      marginRight: "20px",
-                    }}
-                  >
-                    <IconButton color="primary">
-                      <FilterAltIcon />
-                    </IconButton>
-                    <IconButton color="primary">
-                      <ReplayIcon />
-                    </IconButton>
-                  </Box>
-                </TableCell> */}
-              </TableRow>
-            )
-          )}
-        </TableHead>
+        <TableHeader
+          headerGroups={headerGroups}
+          tableData={tableData}
+          setAllFilters={setAllFilters}
+        />
 
         <TableBody {...getTableBodyProps()}>
           {rows
@@ -416,6 +250,7 @@ export default function ProductTable() {
           )}
         </TableBody>
       </Table>
+
       <Box
         sx={{
           display: "flex",
