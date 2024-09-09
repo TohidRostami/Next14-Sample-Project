@@ -13,7 +13,6 @@ import { deleteProduct } from "@/functions/functions";
 import Modal from "@mui/material/Modal";
 import Product from "@/Types/Product";
 
-import i18n from "@/Translation/i18next";
 import { useTranslation } from "react-i18next";
 
 const style = {

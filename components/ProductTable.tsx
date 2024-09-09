@@ -9,13 +9,9 @@ import { useTable, useSortBy, useFilters } from "react-table";
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import ReplayIcon from "@mui/icons-material/Replay";
 
 import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 import { useTranslation } from "react-i18next";
 
@@ -29,11 +25,10 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  TextField,
 } from "@mui/material";
 import Product from "@/Types/Product";
 import TableHeader from "./TableHeader";
-import TableBodys from "./TableBody";
+import TableFooter from "./TableFooter";
 
 export default function ProductTable() {
   const { data } = allProducts();
@@ -178,31 +173,6 @@ export default function ProductTable() {
     useSortBy // This adds sorting functionality
   );
 
-  const [filterValues, setFilterValues] = useState<{ [key: string]: string }>(
-    {}
-  ); // State for all filter values
-
-  // Handle filter change for individual columns
-  const handleFilterChange = (columnId: string, value: string) => {
-    setFilterValues((prev) => ({
-      ...prev,
-      [columnId]: value,
-    }));
-  };
-
-  // Apply all filters
-  const handleApplyAllFilters = () => {
-    setAllFilters(
-      Object.entries(filterValues).map(([id, value]) => ({ id, value }))
-    );
-  };
-
-  // Reset all filters
-  const handleResetAllFilters = () => {
-    setFilterValues({});
-    setAllFilters([]);
-  };
-
   return (
     <>
       <Title>{t("products")}</Title>
@@ -251,34 +221,14 @@ export default function ProductTable() {
         </TableBody>
       </Table>
 
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          width: "100%",
-          justifyContent: "space-between",
-          alignItems: "center",
-          border: 1,
-          borderColor: "grey.300",
-        }}
-      >
-        <Link href="/createpost">
-          <Button type="button" variant="contained" sx={{ marginLeft: "16px" }}>
-            {t("addProduct")}
-          </Button>
-        </Link>
+      <TableFooter
+        dataCount={data ? data.length : 0}
+        pageNumber={page}
+        rowsPerPage={rowsPerPage}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+      />
 
-        <TablePagination
-          component="div"
-          count={data ? data.length : 0}
-          page={page}
-          onPageChange={handleChangePage}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[5, 10, 15, 20]}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          labelRowsPerPage={t("tablePerRow")}
-        />
-      </Box>
       {editModal && (
         <EditModal
           editModal={editModal}
