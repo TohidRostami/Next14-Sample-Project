@@ -85,3 +85,12 @@ export function deleteProduct(id: string) {
     },
   });
 }
+
+export function getCategories (){
+  return useQuery<string[]>({
+    queryKey: ["categories"],
+    queryFn: () =>
+      fetch('https://fakestoreapi.com/products/categories')
+            .then(res=>res.json())
+  });
+}

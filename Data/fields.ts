@@ -42,3 +42,4 @@ const fields: FormFields[] = [
   },
 ];
 export default fields;
+

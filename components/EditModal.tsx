@@ -9,8 +9,17 @@ import Box from "@mui/material/Box";
 import EditIcon from "@mui/icons-material/Edit";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { getSingleProduct, mutateProd } from "@/functions/functions";
-import { Modal } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Autocomplete from "@mui/material/Autocomplete";
+
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+
+import { mutateProd } from "@/functions/functions";
+import { MenuItem, Modal, Select } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Product from "@/Types/Product";
 import fields from "../Data/fields";
@@ -35,11 +44,14 @@ export default function EditModal({
   product,
   editModal,
   handleClose,
+  categories,
 }: {
   product: Product;
   editModal: boolean;
   handleClose: () => void;
+  categories: string[];
 }) {
+  const [visible, setVisible] = React.useState(true);
   const mutation = mutateProd(product);
 
   const { t } = useTranslation();
@@ -53,6 +65,10 @@ export default function EditModal({
     mutation.mutate(data);
     console.log("After Patch: ", data);
     handleClose();
+  };
+
+  const handleCheckboxChange = () => {
+    setVisible(!visible);
   };
 
   return (
@@ -86,6 +102,50 @@ export default function EditModal({
             >
               <Grid container spacing={2}>
                 {fields.map((field) => {
+                  if (field.label.includes("category")) {
+                    return (
+                      // <Grid item xs={12} key={field.id}>
+                      //   <Select
+                      //     key={field.id}
+                      //     labelId={field.id}
+                      //     id={field.id}
+                      //     defaultValue={product?.[field.register]}
+                      //     {...register(field.register)}
+                      //     fullWidth
+                      //   >
+                      //     {categories.map((category) => {
+                      //       return (
+                      //         <MenuItem key={category.length} value={category}>
+                      //           {category}
+                      //         </MenuItem>
+                      //       );
+                      //     })}
+                      //   </Select>
+                      // </Grid>
+                      <Grid item container spacing={2} key={field.id}>
+                        <Grid item xs={5}>
+                          <Autocomplete
+                            disablePortal
+                            options={categories}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label={product?.[field.register]}
+                                key={categories.length}
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item xs={7}>
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DemoContainer components={["DatePicker"]}>
+                              <DatePicker label="Pick date" />
+                            </DemoContainer>
+                          </LocalizationProvider>
+                        </Grid>
+                      </Grid>
+                    );
+                  }
                   return (
                     <Grid item xs={12} key={field.id}>
                       <TextField
@@ -100,6 +160,19 @@ export default function EditModal({
                     </Grid>
                   );
                 })}
+
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    label="Are you sure you want to Edit?"
+                    control={
+                      <Checkbox
+                        name="editCheckbox"
+                        onChange={handleCheckboxChange}
+                        inputProps={{ "aria-label": "controlled" }}
+                      />
+                    }
+                  />
+                </Grid>
               </Grid>
               <Grid xs={7}>
                 <Button
@@ -115,6 +188,7 @@ export default function EditModal({
                   variant="contained"
                   color="success"
                   sx={{ mt: 3, mb: 2 }}
+                  disabled={visible}
                 >
                   {t("submitEdit")}
                 </Button>
