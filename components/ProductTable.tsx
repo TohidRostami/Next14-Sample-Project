@@ -2,9 +2,8 @@
 
 import Title from "./Title";
 
-import { allProducts } from "@/functions/functions";
+import { allProducts, getCategories } from "@/functions/functions";
 import React, { useState } from "react";
-import Link from "next/link";
 import { useTable, useSortBy, useFilters } from "react-table";
 
 import EditIcon from "@mui/icons-material/Edit";
@@ -16,22 +15,20 @@ import DeleteModal from "./DeleteModal";
 import { useTranslation } from "react-i18next";
 
 import {
-  Box,
-  Button,
   IconButton,
   Table,
   TableBody,
   TableCell,
-  TableHead,
-  TablePagination,
   TableRow,
 } from "@mui/material";
+
 import Product from "@/Types/Product";
 import TableHeader from "./TableHeader";
 import TableFooter from "./TableFooter";
 
 export default function ProductTable() {
   const { data } = allProducts();
+  const { data: categories } = getCategories();
 
   const [prodId, setProdId] = useState(0);
 
@@ -231,6 +228,7 @@ export default function ProductTable() {
 
       {editModal && (
         <EditModal
+          categories={(categories as string[])}
           editModal={editModal}
           product={(data as Product[])[prodId - 1]}
           handleClose={closeModal}
@@ -246,4 +244,3 @@ export default function ProductTable() {
     </>
   );
 }
-// changed

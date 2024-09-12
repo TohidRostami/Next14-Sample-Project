@@ -9,13 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.0",
+    "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
+    "@mui/x-date-pickers": "^7.16.0",
+    "@nextui-org/autocomplete": "^2.1.5",
     "@tanstack/react-query": "^5.51.23",
     "@tanstack/react-table": "^8.20.1",
+    "dayjs": "^1.11.13",
     "i18next": "^22.5.1",
     "i18next-browser-languagedetector": "^8.0.0",
     "i18next-http-backend": "^2.6.1",

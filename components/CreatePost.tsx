@@ -35,21 +35,12 @@ export default function CreatePost() {
   };
 
   const submitHandler: SubmitHandler<Product> = (data) => {
-    const { title, price, category, description, image } = data;
-    console.log("BEFORE ADD", {
-      title,
-      price,
-      category,
-      description,
-      image,
-    });
-
     mutation.mutate({
-      title,
-      price,
-      category,
-      description,
-      image,
+      title: data.title,
+      price: data.price,
+      category: data.category,
+      description: data.description,
+      image: data.image,
     });
   };
 
@@ -114,4 +105,3 @@ export default function CreatePost() {
     </Container>
   );
 }
-// changed

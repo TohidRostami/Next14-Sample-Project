@@ -6,4 +6,3 @@ const CreatePostPage = () => {
 };
 
 export default CreatePostPage;
-//changed
