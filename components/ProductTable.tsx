@@ -25,6 +25,7 @@ import {
 import Product from "@/Types/Product";
 import TableHeader from "./TableHeader";
 import TableFooter from "./TableFooter";
+import AddOrEdit from "./AddOrEdit";
 
 export default function ProductTable() {
   const { data } = allProducts();
@@ -227,11 +228,12 @@ export default function ProductTable() {
       />
 
       {editModal && (
-        <EditModal
-          categories={(categories as string[])}
+        <AddOrEdit
+          categories={categories as string[]}
           editModal={editModal}
           product={(data as Product[])[prodId - 1]}
           handleClose={closeModal}
+          pageIdentifier="editModal"
         />
       )}
       {deleteModal && (

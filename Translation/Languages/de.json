@@ -18,5 +18,7 @@
   "deleteProduct": "Produkt löschen",
   "deleteQuestion": "Möchten Sie das Produkt {{number}} wirklich löschen?",
   "tablePerRow": "Zeilen pro Seite:",
-  "filterTextBox": "{{count}} Datensätze durchsuchen..."
+  "filterTextBox": "{{count}} Datensätze durchsuchen...",
+  "datePicker": "Datumsauswahl",
+  "checkboxText": "Ja, ich bin sicher."
 }
