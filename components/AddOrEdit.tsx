@@ -3,7 +3,6 @@ import EditModal from "./EditModal";
 import CreatePost from "./CreatePost";
 import Product from "@/Types/Product";
 
-// { pageIdentifier }: { pageIdentifier: string }
 const AddOrEdit = ({
   pageIdentifier,
   product,
@@ -17,20 +16,17 @@ const AddOrEdit = ({
   categories: string[];
   pageIdentifier: string;
 }) => {
-  return (
-    <>
-      {pageIdentifier === "editModal" ? (
-        <EditModal
-          categories={categories}
-          editModal={editModal}
-          handleClose={handleClose}
-          product={product}
-        />
-      ) : (
-        <CreatePost />
-      )}
-    </>
-  );
+  if (pageIdentifier === "editModal")
+    return (
+      <EditModal
+        categories={categories}
+        editModal={editModal}
+        handleClose={handleClose}
+        product={product}
+      />
+    );
+
+  return <CreatePost />;
 };
 
 export default AddOrEdit;

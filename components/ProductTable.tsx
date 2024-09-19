@@ -9,7 +9,6 @@ import { useTable, useSortBy, useFilters } from "react-table";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import EditModal from "./EditModal";
 import DeleteModal from "./DeleteModal";
 
 import { useTranslation } from "react-i18next";
