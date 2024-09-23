@@ -5,4 +5,5 @@ export default interface FormFields {
   required: boolean;
   fullWidth: boolean;
   autoFocus: boolean;
+  minLength: number;
 }

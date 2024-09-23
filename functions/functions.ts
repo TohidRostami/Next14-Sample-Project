@@ -36,9 +36,6 @@ export function mutateProd(prod: Product) {
         },
       }).then((res) => res.json());
     },
-    onSuccess: () => {
-      return console.log("SUCCESS!");
-    },
   });
 }
 
@@ -77,20 +74,15 @@ export function deleteProduct(id: string) {
         method: "DELETE",
       }).then((res) => res.json());
     },
-    onSuccess: () => {
-      console.log("SUCCESS!");
-    },
-    onError: () => {
-      throw new Error("Failed to fetch the data!");
-    },
   });
 }
 
-export function getCategories (){
+export function getCategories() {
   return useQuery<string[]>({
     queryKey: ["categories"],
     queryFn: () =>
-      fetch('https://fakestoreapi.com/products/categories')
-            .then(res=>res.json())
+      fetch("https://fakestoreapi.com/products/categories").then((res) =>
+        res.json()
+      ),
   });
 }

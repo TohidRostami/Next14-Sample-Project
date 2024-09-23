@@ -7,7 +7,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-import { mutateProd } from "@/functions/functions";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { getCategories, mutateProd } from "@/functions/functions";
 import { Modal } from "@mui/material";
 import { SubmitHandler } from "react-hook-form";
 import Product from "@/Types/Product";
@@ -33,59 +36,68 @@ export default function EditModal({
   product,
   editModal,
   handleClose,
-  categories,
 }: {
   product: Product | null;
   editModal: boolean;
   handleClose: () => void;
-  categories: string[];
 }) {
   const mutation = mutateProd(product as Product);
+
+  const { data: categories, isLoading, isError } = getCategories();
 
   const { t } = useTranslation();
 
   const submitHandler: SubmitHandler<Product> = (data) => {
-    console.log({
-      data,
+    console.log(data);
+    mutation.mutate(data, {
+      onSuccess: () => {
+        handleClose(); // Close modal after success
+      },
+      onError: (error) => {
+        console.error("Failed to update product:", error);
+        toast.error("API error accoured!");
+      },
     });
-    mutation.mutate(data);
-    console.log("After Patch: ", data);
-    handleClose();
   };
 
   return (
-    <Modal
-      open={editModal}
-      aria-labelledby="parent-modal-title"
-      aria-describedby="parent-modal-description"
-    >
-      <Box sx={{ ...style }}>
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <EditIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              {t("editProduct")}
-            </Typography>
-            <Form
-              categories={categories}
-              product={product}
-              backHandler={handleClose}
-              submitHandler={submitHandler}
-              submitButtonText="submitEdit"
-            />
-          </Box>
-        </Container>
-      </Box>
-    </Modal>
+    <>
+      <ToastContainer />
+      <Modal
+        open={editModal}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...style }}>
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <EditIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                {t("editProduct")}
+              </Typography>
+              <Form
+                isLoading={isLoading}
+                isError={isError}
+                product={product}
+                categories={categories}
+                submitHandler={submitHandler}
+                backHandler={handleClose}
+                submitButtonText="addProduct"
+              />
+            </Box>
+          </Container>
+        </Box>
+      </Modal>
+    </>
   );
 }

@@ -2,9 +2,12 @@
 
 import Title from "./Title";
 
-import { allProducts, getCategories } from "@/functions/functions";
+import { allProducts } from "@/functions/functions";
 import React, { useState } from "react";
 import { useTable, useSortBy, useFilters } from "react-table";
+
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -27,8 +30,7 @@ import TableFooter from "./TableFooter";
 import AddOrEdit from "./AddOrEdit";
 
 export default function ProductTable() {
-  const { data } = allProducts();
-  const { data: categories } = getCategories();
+  const { data, isError } = allProducts();
 
   const [prodId, setProdId] = useState(0);
 
@@ -170,8 +172,13 @@ export default function ProductTable() {
     useSortBy // This adds sorting functionality
   );
 
+  if (isError) {
+    toast.error("Product's API error accoured!");
+  }
+
   return (
     <>
+      <ToastContainer />
       <Title>{t("products")}</Title>
       <Table
         {...getTableProps()}
@@ -228,7 +235,6 @@ export default function ProductTable() {
 
       {editModal && (
         <AddOrEdit
-          categories={categories as string[]}
           editModal={editModal}
           product={(data as Product[])[prodId - 1]}
           handleClose={closeModal}
