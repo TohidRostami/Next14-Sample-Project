@@ -2,7 +2,7 @@
 
 import Title from "./Title";
 
-import { allProducts } from "@/functions/functions";
+import { useProducts } from "@/functions/functions";
 import React, { useState } from "react";
 import { useTable, useSortBy, useFilters } from "react-table";
 
@@ -11,6 +11,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+
+import { EditOutlined,DeleteOutlined } from '@ant-design/icons'
 
 import DeleteModal from "./DeleteModal";
 
@@ -30,7 +32,8 @@ import TableFooter from "./TableFooter";
 import AddOrEdit from "./AddOrEdit";
 
 export default function ProductTable() {
-  const { data, isError } = allProducts();
+  const {allProducts} = useProducts();
+  const { data, isError } = allProducts;
 
   const [prodId, setProdId] = useState(0);
 
@@ -109,7 +112,7 @@ export default function ProductTable() {
             color="primary"
             onClick={() => openModal(row.original.id)}
           >
-            <EditIcon />
+            <EditOutlined />
           </IconButton>
         ),
       },
@@ -124,7 +127,7 @@ export default function ProductTable() {
             color="error"
             onClick={() => openDeleteModal(row.original.id)}
           >
-            <DeleteIcon />
+            <DeleteOutlined />
           </IconButton>
         ),
       },

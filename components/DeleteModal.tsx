@@ -9,7 +9,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-import { deleteProduct } from "@/functions/functions";
+import { DeleteOutlined } from "@ant-design/icons";
+
+import { useProducts } from "@/functions/functions";
 import Modal from "@mui/material/Modal";
 import Product from "@/Types/Product";
 
@@ -42,6 +44,7 @@ export default function DeleteModal({
   handleClose: () => void;
 }) {
   const { t } = useTranslation();
+  const { deleteProduct } = useProducts();
   const mutation = deleteProduct(`${product.id}`);
 
   const deleteHandler = () => {
@@ -76,7 +79,8 @@ export default function DeleteModal({
               }}
             >
               <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                <DeleteIcon />
+                {/* <DeleteIcon /> */}
+                <DeleteOutlined />
               </Avatar>
               <Typography component="h1" variant="h5">
                 {t("deleteProduct")}
