@@ -7,6 +7,7 @@ const fields: FormFields[] = [
     required: true,
     fullWidth: true,
     autoFocus: true,
+    minLength: 4,
   },
   {
     register: "price",
@@ -15,6 +16,7 @@ const fields: FormFields[] = [
     required: true,
     fullWidth: true,
     autoFocus: false,
+    minLength: 2,
   },
   {
     register: "description",
@@ -23,6 +25,7 @@ const fields: FormFields[] = [
     required: true,
     fullWidth: true,
     autoFocus: false,
+    minLength: 4,
   },
   {
     register: "category",
@@ -31,6 +34,7 @@ const fields: FormFields[] = [
     required: true,
     fullWidth: true,
     autoFocus: false,
+    minLength: 4,
   },
   {
     register: "image",
@@ -39,7 +43,7 @@ const fields: FormFields[] = [
     required: true,
     fullWidth: true,
     autoFocus: false,
+    minLength: 5,
   },
 ];
 export default fields;
-
