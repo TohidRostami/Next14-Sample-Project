@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createProduct, getCategories } from "@/functions/functions";
+import { useProducts } from "@/functions/functions";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { SubmitHandler } from "react-hook-form";
@@ -16,7 +16,10 @@ import Form from "./Form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { PlusOutlined } from "@ant-design/icons";
+
 export default function CreatePost() {
+  const { getCategories, createProduct } = useProducts();
   const { data: categories, isLoading, isError } = getCategories();
 
   const { t } = useTranslation();
@@ -61,7 +64,8 @@ export default function CreatePost() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <AddIcon />
+            {/* <AddIcon /> */}
+            <PlusOutlined />
           </Avatar>
           <Typography component="h1" variant="h5">
             {t("addProduct")}

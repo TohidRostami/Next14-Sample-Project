@@ -10,7 +10,9 @@ import Container from "@mui/material/Container";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { getCategories, mutateProd } from "@/functions/functions";
+import { EditOutlined } from "@ant-design/icons";
+
+import { useProducts } from "@/functions/functions";
 import { Modal } from "@mui/material";
 import { SubmitHandler } from "react-hook-form";
 import Product from "@/Types/Product";
@@ -41,6 +43,7 @@ export default function EditModal({
   editModal: boolean;
   handleClose: () => void;
 }) {
+  const { mutateProd, getCategories } = useProducts();
   const mutation = mutateProd(product as Product);
 
   const { data: categories, isLoading, isError } = getCategories();
@@ -80,7 +83,8 @@ export default function EditModal({
               }}
             >
               <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                <EditIcon />
+                {/* <EditIcon /> */}
+                <EditOutlined />
               </Avatar>
               <Typography component="h1" variant="h5">
                 {t("editProduct")}
