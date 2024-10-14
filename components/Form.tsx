@@ -7,7 +7,6 @@ import {
   Box,
   Button,
   Checkbox,
-  CircularProgress,
   FormControlLabel,
   Grid,
   TextField,
@@ -22,27 +21,23 @@ import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { t } from "i18next";
+import { useAppSelector } from "@/Store/hooks";
 
 const Form = ({
   submitHandler,
   backHandler,
-  categories,
   product,
   submitButtonText,
-  isLoading,
-  isError,
 }: {
   submitHandler: SubmitHandler<Product>;
   backHandler: () => void;
-  categories: string[] | undefined;
   product: Product | null;
   submitButtonText: string;
-  isLoading: boolean;
-  isError: boolean;
 }) => {
-  // "title" | "price" | "category" | "description" | "image" | "id"
+  const categories = useAppSelector((state) => state.category);
+
   const schema: ZodType<Product> = z.object({
-    title: z.string().min(4).max(30),
+    title: z.string().min(4).max(100),
     price: z.preprocess(
       (val) => {
         const priceStr = String(val);
@@ -52,9 +47,9 @@ const Form = ({
         message: "Price must be a valid number",
       })
     ),
-    category: z.string().min(4).max(30),
-    description: z.string().min(4).max(30),
-    image: z.string().min(4).max(30),
+    category: z.string().min(4).max(100),
+    description: z.string().min(4).max(200),
+    image: z.string().min(4).max(100),
   });
 
   const {
@@ -72,9 +67,7 @@ const Form = ({
 
   return (
     <>
-      {isLoading ? (
-        <CircularProgress />
-      ) : isError ? (
+      {categories.length === 0 ? (
         <Box>
           <Alert severity="error">{t("failedToFetchCategories")}</Alert>
           <Button
@@ -101,7 +94,6 @@ const Form = ({
                   <Grid item container spacing={2} key={field.id}>
                     <Grid item xs={5}>
                       <Autocomplete
-                        required={field.required}
                         defaultValue={product?.category}
                         disablePortal
                         options={categories as string[]}
@@ -109,10 +101,10 @@ const Form = ({
                           <TextField
                             {...params}
                             label={t("category")}
-                            key={field.id}
+                            required={field.required}
+                            {...register("category")}
                           />
                         )}
-                        {...register("category")}
                       />
                     </Grid>
                     <Grid item xs={7}>

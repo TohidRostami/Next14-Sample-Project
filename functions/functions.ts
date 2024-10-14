@@ -8,6 +8,14 @@ export const useProducts = () => {
       fetch("https://fakestoreapi.com/products").then((res) => res.json()),
   });
 
+ const productKeyes = () => {
+  const prod = fetch('https://fakestoreapi.com/products/1')
+  .then(res=>res.json())
+  .then(json=>console.log(json))
+  const keys = Object.keys(prod);
+  return keys;
+  };
+
   const getSingleProduct = (id: string) =>
     useQuery({
       queryKey: ["prod"],

@@ -3,7 +3,7 @@
 import Title from "./Title";
 
 import { useProducts } from "@/functions/functions";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTable, useSortBy, useFilters } from "react-table";
 
 import { toast, ToastContainer } from "react-toastify";
@@ -12,13 +12,14 @@ import "react-toastify/dist/ReactToastify.css";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import { EditOutlined,DeleteOutlined } from '@ant-design/icons'
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 import DeleteModal from "./DeleteModal";
 
 import { useTranslation } from "react-i18next";
 
 import {
+  Button,
   IconButton,
   Table,
   TableBody,
@@ -31,9 +32,27 @@ import TableHeader from "./TableHeader";
 import TableFooter from "./TableFooter";
 import AddOrEdit from "./AddOrEdit";
 
+import {
+  initialCategories,
+  addCategory,
+  deleteCategory,
+} from "../Store/appSlice";
+
+import { useAppDispatch, useAppSelector } from "../Store/hooks";
+
 export default function ProductTable() {
-  const {allProducts} = useProducts();
+  const { allProducts, getCategories } = useProducts();
   const { data, isError } = allProducts;
+  const { data: catData } = getCategories();
+
+  const dispatch = useAppDispatch();
+  const value = useAppSelector((state) => state.category);
+
+  useEffect(() => {
+    if (catData && value.length === 0) {
+      dispatch(initialCategories(catData));
+    }
+  }, [catData]);
 
   const [prodId, setProdId] = useState(0);
 
@@ -86,7 +105,6 @@ export default function ProductTable() {
         accessor: "title",
         Filter: DefaultColumnFilter,
       },
-      ,
       {
         Header: t("price"),
         accessor: "price",
@@ -95,13 +113,11 @@ export default function ProductTable() {
           return <div>{value} $</div>;
         },
       },
-      ,
       {
         Header: t("category"),
         accessor: "category",
         Filter: DefaultColumnFilter,
       },
-
       {
         Header: t("edit"),
         accessor: "edit",
@@ -116,7 +132,6 @@ export default function ProductTable() {
           </IconButton>
         ),
       },
-
       {
         Header: t("delete"),
         accessor: "delete",
@@ -251,6 +266,41 @@ export default function ProductTable() {
           handleClose={closeDeleteModal}
         />
       )}
+      <Button
+        type="button"
+        fullWidth
+        variant="contained"
+        sx={{ mt: 1, mb: 2 }}
+        onClick={() => {
+          dispatch(addCategory("KATOONI"));
+          console.log("FROM ADD BUTTON:", value);
+        }}
+      >
+        {t("add")}
+      </Button>
+      <Button
+        type="button"
+        fullWidth
+        variant="contained"
+        sx={{ mt: 1, mb: 2 }}
+        onClick={() => {
+          dispatch(deleteCategory("KATOONI"));
+          console.log("VALUE AFTER DELETE CONSOLE:", value);
+        }}
+      >
+        {t("delete")}
+      </Button>
+      <Button
+        type="button"
+        fullWidth
+        variant="contained"
+        sx={{ mt: 1, mb: 2 }}
+        onClick={() => {
+          console.log("VALUE CONSOLE:", value);
+        }}
+      >
+        {t("LOG")}
+      </Button>
     </>
   );
 }

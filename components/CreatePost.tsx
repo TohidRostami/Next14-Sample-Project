@@ -2,7 +2,6 @@
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
-import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useProducts } from "@/functions/functions";
@@ -17,13 +16,16 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { PlusOutlined } from "@ant-design/icons";
+import { useAppSelector } from "@/Store/hooks";
 
 export default function CreatePost() {
-  const { getCategories, createProduct } = useProducts();
-  const { data: categories, isLoading, isError } = getCategories();
+  const { createProduct } = useProducts();
 
   const { t } = useTranslation();
   const router = useRouter();
+
+  const value = useAppSelector((state) => state.category);
+  console.log("FROM CREATE POST: ", value);
 
   const mutation = useMutation({
     mutationFn: createProduct,
@@ -42,9 +44,11 @@ export default function CreatePost() {
 
   const submitHandler: SubmitHandler<Product> = (data) => {
     console.log(data);
+    const parsedPrice = data.price.toString();
+    console.log("toString PRICE: ", parsedPrice);
     mutation.mutate({
       title: data.title,
-      price: data.price,
+      price: parsedPrice,
       category: data.category,
       description: data.description,
       image: data.image,
@@ -71,10 +75,7 @@ export default function CreatePost() {
             {t("addProduct")}
           </Typography>
           <Form
-            isLoading={isLoading}
-            isError={isError}
             product={null}
-            categories={categories}
             submitHandler={submitHandler}
             backHandler={backHandler}
             submitButtonText="addProduct"
