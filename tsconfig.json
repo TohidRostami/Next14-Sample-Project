@@ -19,8 +19,15 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "types": ["jest", "node", "@testing-library/jest-dom"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/ThemeProvider.tsط"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "components/ThemeProvider.tsط"
+  ],
   "exclude": ["node_modules"]
 }

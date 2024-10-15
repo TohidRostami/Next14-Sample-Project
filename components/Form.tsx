@@ -21,8 +21,10 @@ import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { t } from "i18next";
-import { useAppSelector } from "@/Store/hooks";
 
+import { useSelector } from "react-redux";
+
+import { RootState } from "@/Store/store";
 const Form = ({
   submitHandler,
   backHandler,
@@ -34,7 +36,7 @@ const Form = ({
   product: Product | null;
   submitButtonText: string;
 }) => {
-  const categories = useAppSelector((state) => state.category);
+  const categories = useSelector<RootState>((state) => state.category);
 
   const schema: ZodType<Product> = z.object({
     title: z.string().min(4).max(100),

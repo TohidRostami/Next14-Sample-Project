@@ -38,15 +38,16 @@ import {
   deleteCategory,
 } from "../Store/appSlice";
 
-import { useAppDispatch, useAppSelector } from "../Store/hooks";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/Store/store";
 
 export default function ProductTable() {
   const { allProducts, getCategories } = useProducts();
   const { data, isError } = allProducts;
   const { data: catData } = getCategories();
 
-  const dispatch = useAppDispatch();
-  const value = useAppSelector((state) => state.category);
+  const dispatch = useDispatch();
+  const value = useSelector<RootState>((state) => state.category);
 
   useEffect(() => {
     if (catData && value.length === 0) {

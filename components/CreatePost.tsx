@@ -16,7 +16,9 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { PlusOutlined } from "@ant-design/icons";
-import { useAppSelector } from "@/Store/hooks";
+
+import { useSelector } from "react-redux";
+import { RootState } from "@/Store/store";
 
 export default function CreatePost() {
   const { createProduct } = useProducts();
@@ -24,7 +26,8 @@ export default function CreatePost() {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const value = useAppSelector((state) => state.category);
+  const value = useSelector<RootState>((state) => state.category);
+
   console.log("FROM CREATE POST: ", value);
 
   const mutation = useMutation({
