@@ -21,6 +21,8 @@ const TableFooter = ({
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
 }) => {
+  console.log(pageNumber);
+
   return (
     <Box
       sx={{

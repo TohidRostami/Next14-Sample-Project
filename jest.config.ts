@@ -1,17 +1,30 @@
-// jest.config.ts
-import type { Config } from 'jest';
+import type { Config } from "jest";
 
 const config: Config = {
-  preset: 'ts-jest', // Use ts-jest to handle TypeScript files
-  testEnvironment: 'jsdom', // For testing React components with DOM
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/$1', // Handle module aliases if any (update this according to your paths)
-  },
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'], // For custom matchers from @testing-library/jest-dom
+  verbose: true,
+  // Use ts-jest to transform TypeScript and JSX files
+  preset: "ts-jest",
+  testEnvironment: "jsdom",
+
+  // Transform TypeScript and JSX files using ts-jest
   transform: {
-    '^.+\\.tsx?$': 'ts-jest', // Transform TypeScript files using ts-jest
+    "^.+\\.(ts|tsx)$": "ts-jest",
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'], // Recognize .ts and .tsx extensions
+
+  // Ignore transformation of node_modules (except specific cases if needed)
+  transformIgnorePatterns: ["/node_modules/(?!@mui)"],
+
+  // Specify file extensions to be handled by Jest
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
+
+  moduleNameMapper: {
+    // Mock static files (e.g., CSS, images) since Jest can't process them
+    "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+    "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/__mocks__/fileMock.js",
+  },
+  setupFilesAfterEnv: ["@testing-library/jest-dom"],
+  // Automatically clear mock calls and instances between every test
+  clearMocks: true,
 };
 
 export default config;

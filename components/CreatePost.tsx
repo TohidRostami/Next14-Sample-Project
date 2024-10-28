@@ -4,7 +4,7 @@ import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useProducts } from "@/functions/functions";
+import { useProducts } from "../functions/functions";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { SubmitHandler } from "react-hook-form";
@@ -16,9 +16,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { PlusOutlined } from "@ant-design/icons";
-
-import { useSelector } from "react-redux";
-import { RootState } from "@/Store/store";
+import { useAppSelector } from "../Store/hooks";
 
 export default function CreatePost() {
   const { createProduct } = useProducts();
@@ -26,7 +24,7 @@ export default function CreatePost() {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const value = useSelector<RootState>((state) => state.category);
+  const value = useAppSelector((state) => state.category);
 
   console.log("FROM CREATE POST: ", value);
 

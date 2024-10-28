@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 
 import { DeleteOutlined } from "@ant-design/icons";
 
-import { useProducts } from "@/functions/functions";
+import { useProducts } from "../functions/functions";
 import Product from "@/Types/Product";
 
 import { useTranslation } from "react-i18next";
@@ -29,7 +29,7 @@ export default function DeleteModal({
   const { t } = useTranslation();
   const { deleteProduct } = useProducts();
   const mutation = deleteProduct(`${product.id}`);
-
+  
   const deleteHandler = () => {
     mutation.mutate(undefined, {
       onSuccess: () => {

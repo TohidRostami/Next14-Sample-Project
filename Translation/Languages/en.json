@@ -16,7 +16,7 @@
   "back": "Back",
   "submitEdit": "Submit Edit",
   "deleteProduct": "Delete Product",
-  "deleteQuestion": "Are yoe sure you want to delete Product {{number}}",
+  "deleteQuestion": "Are you sure you want to delete Product {{number}}",
   "tablePerRow": "Rows per page:",
   "filterTextBox": "Search {{count}} records...",
   "datePicker": "Date Picker",

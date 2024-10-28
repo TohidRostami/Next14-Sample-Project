@@ -9,8 +9,8 @@ const layout = ({
     <div>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <p style={{ fontSize: "0.8rem", fontStyle: "italic" }}>
-          "Add your favorite Product with details to sell them and make some
-          money"
+        `&quot;`Add your favorite Product with details to sell them and make some
+          money`&quot;`
         </p>
       </div>
       <section>{children}</section>

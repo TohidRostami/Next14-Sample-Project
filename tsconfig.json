@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "esnext",
+    "lib": ["dom", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -10,7 +11,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "plugins": [
       {
@@ -27,7 +28,11 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "components/ThemeProvider.tsط"
+    "components/ThemeProvider.tsط",
+    "babel.config.js",
+    "testComponents/SampleTest.jsx",
+    "app/test/SampleTest.test.tsx",
+    "app/test/DeleteModal.test.tsx"
   ],
   "exclude": ["node_modules"]
 }

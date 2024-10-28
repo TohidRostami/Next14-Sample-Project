@@ -38,16 +38,15 @@ import {
   deleteCategory,
 } from "../Store/appSlice";
 
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/Store/store";
+import { useAppDispatch, useAppSelector } from "../Store/hooks";
 
 export default function ProductTable() {
-  const { allProducts, getCategories } = useProducts();
+  const { allProducts, getCategories, deleteProduct } = useProducts();
   const { data, isError } = allProducts;
   const { data: catData } = getCategories();
 
-  const dispatch = useDispatch();
-  const value = useSelector<RootState>((state) => state.category);
+  const dispatch = useAppDispatch();
+  const value = useAppSelector((state) => state.category);
 
   useEffect(() => {
     if (catData && value.length === 0) {
@@ -267,6 +266,7 @@ export default function ProductTable() {
           handleClose={closeDeleteModal}
         />
       )}
+
       <Button
         type="button"
         fullWidth

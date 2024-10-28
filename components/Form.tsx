@@ -1,6 +1,6 @@
 import React from "react";
-import fields from "@/Data/fields";
-import Product from "@/Types/Product";
+import fields from "../Data/fields";
+import Product from "../Types/Product";
 import {
   Alert,
   Autocomplete,
@@ -12,19 +12,17 @@ import {
   TextField,
 } from "@mui/material";
 
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+// import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { t } from "i18next";
+import { useAppSelector } from "../Store/hooks";
 
-import { useSelector } from "react-redux";
-
-import { RootState } from "@/Store/store";
 const Form = ({
   submitHandler,
   backHandler,
@@ -36,19 +34,19 @@ const Form = ({
   product: Product | null;
   submitButtonText: string;
 }) => {
-  const categories = useSelector<RootState>((state) => state.category);
+  // const categories = useAppSelector((state) => state.category);
+
+  const categories = ["men's clothing","jewelery","electronics","women's clothing",]
 
   const schema: ZodType<Product> = z.object({
+    id: z.number(),
     title: z.string().min(4).max(100),
-    price: z.preprocess(
-      (val) => {
-        const priceStr = String(val);
-        return /^[0-9]+(\.[0-9]{1,2})?$/.test(priceStr) ? priceStr : null; // Return price as string if valid, else null
-      },
-      z.string().refine((val) => val !== null, {
-        message: "Price must be a valid number",
+    price: z
+      .string()
+      .refine((val) => !isNaN(parseFloat(val)), {
+        message: "Price must be a number",
       })
-    ),
+      .transform((val) => parseFloat(val).toFixed(2)), // Ensure the price is transformed to a string,
     category: z.string().min(4).max(100),
     description: z.string().min(4).max(200),
     image: z.string().min(4).max(100),
@@ -109,13 +107,13 @@ const Form = ({
                         )}
                       />
                     </Grid>
-                    <Grid item xs={7}>
+                    {/* <Grid item xs={7}>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoContainer components={["DatePicker"]}>
                           <DatePicker label={t("datePicker")} />
                         </DemoContainer>
                       </LocalizationProvider>
-                    </Grid>
+                    </Grid> */}
                   </Grid>
                 );
               }
@@ -161,12 +159,14 @@ const Form = ({
           >
             {t(submitButtonText)}
           </Button>
+
           <Button
             type="button"
             fullWidth
             variant="contained"
             sx={{ mt: 1, mb: 2 }}
             onClick={backHandler}
+            data-testid="backButton"
           >
             {t("back")}
           </Button>
