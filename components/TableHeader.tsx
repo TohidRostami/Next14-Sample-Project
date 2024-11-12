@@ -9,7 +9,12 @@ import {
 import { t } from "i18next";
 import React, { useState } from "react";
 
-import { FilterOutlined, ReloadOutlined,ArrowUpOutlined,ArrowDownOutlined } from "@ant-design/icons";
+import {
+  FilterOutlined,
+  ReloadOutlined,
+  ArrowUpOutlined,
+  ArrowDownOutlined,
+} from "@ant-design/icons";
 
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import ReplayIcon from "@mui/icons-material/Replay";
@@ -75,7 +80,7 @@ const TableHeader = ({
                   }}
                 >
                   {column.render("Header")}
-                  <span>
+                  <span id="sort">
                     {column.isSorted ? (
                       column.isSortedDesc ? (
                         // <ArrowUpwardIcon sx={{ fontSize: 20 }} />
@@ -117,11 +122,19 @@ const TableHeader = ({
                     justifyContent: "center",
                   }}
                 >
-                  <IconButton color="primary" onClick={handleApplyAllFilters}>
+                  <IconButton
+                    color="primary"
+                    onClick={handleApplyAllFilters}
+                    aria-label="Filter"
+                  >
                     {/* <FilterAltIcon /> */}
                     <FilterOutlined />
                   </IconButton>
-                  <IconButton color="primary" onClick={handleResetAllFilters}>
+                  <IconButton
+                    color="primary"
+                    onClick={handleResetAllFilters}
+                    aria-label="Reset"
+                  >
                     {/* <ReplayIcon /> */}
                     <ReloadOutlined />
                   </IconButton>

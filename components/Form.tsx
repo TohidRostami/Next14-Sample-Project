@@ -12,10 +12,10 @@ import {
   TextField,
 } from "@mui/material";
 
-// import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-// import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,8 +36,12 @@ const Form = ({
 }) => {
   // const categories = useAppSelector((state) => state.category);
 
-  const categories = ["men's clothing","jewelery","electronics","women's clothing",]
-
+  const categories = [
+    "electronics",
+    "jewelery",
+    "men's clothing",
+    "women's clothing",
+  ];
   const schema: ZodType<Product> = z.object({
     id: z.number(),
     title: z.string().min(4).max(100),
@@ -94,6 +98,7 @@ const Form = ({
                   <Grid item container spacing={2} key={field.id}>
                     <Grid item xs={5}>
                       <Autocomplete
+                        id="category-select"
                         defaultValue={product?.category}
                         disablePortal
                         options={categories as string[]}
@@ -107,13 +112,13 @@ const Form = ({
                         )}
                       />
                     </Grid>
-                    {/* <Grid item xs={7}>
+                    <Grid item xs={7}>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoContainer components={["DatePicker"]}>
                           <DatePicker label={t("datePicker")} />
                         </DemoContainer>
                       </LocalizationProvider>
-                    </Grid> */}
+                    </Grid>
                   </Grid>
                 );
               }
@@ -177,26 +182,3 @@ const Form = ({
 };
 
 export default Form;
-
-// in TextField
-// error={!!errors[field.register]}
-// helperText={
-//   errors[field.register]
-//     ? errors[field.register]?.message
-//     : ""
-// }
-
-// in resigiter
-// , {
-//   required: field.required
-//     ? `${t(field.label)} is required`
-//     : false,
-//   minLength: field.minLength
-//     ? {
-//         value: field.minLength,
-//         message: `${t(field.label)} must be at least ${
-//           field.minLength
-//         } characters`,
-//       }
-//     : undefined,
-// }

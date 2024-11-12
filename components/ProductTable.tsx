@@ -266,42 +266,6 @@ export default function ProductTable() {
           handleClose={closeDeleteModal}
         />
       )}
-
-      <Button
-        type="button"
-        fullWidth
-        variant="contained"
-        sx={{ mt: 1, mb: 2 }}
-        onClick={() => {
-          dispatch(addCategory("KATOONI"));
-          console.log("FROM ADD BUTTON:", value);
-        }}
-      >
-        {t("add")}
-      </Button>
-      <Button
-        type="button"
-        fullWidth
-        variant="contained"
-        sx={{ mt: 1, mb: 2 }}
-        onClick={() => {
-          dispatch(deleteCategory("KATOONI"));
-          console.log("VALUE AFTER DELETE CONSOLE:", value);
-        }}
-      >
-        {t("delete")}
-      </Button>
-      <Button
-        type="button"
-        fullWidth
-        variant="contained"
-        sx={{ mt: 1, mb: 2 }}
-        onClick={() => {
-          console.log("VALUE CONSOLE:", value);
-        }}
-      >
-        {t("LOG")}
-      </Button>
     </>
   );
 }

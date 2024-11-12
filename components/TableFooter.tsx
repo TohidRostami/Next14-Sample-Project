@@ -21,8 +21,6 @@ const TableFooter = ({
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
 }) => {
-  console.log(pageNumber);
-
   return (
     <Box
       sx={{
@@ -38,6 +36,12 @@ const TableFooter = ({
       <Link href="/createpost">
         <Button type="button" variant="contained" sx={{ marginLeft: "16px" }}>
           {t("addProduct")}
+        </Button>
+      </Link>
+
+      <Link href="/sampleTest">
+        <Button type="button" variant="contained">
+          Sample Form
         </Button>
       </Link>
 

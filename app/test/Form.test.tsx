@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom"; // <-- Add this for matchers
 import Form from "../../components/Form";
 import { SubmitHandler } from "react-hook-form";
 import Product from "../../Types/Product";
-import "@testing-library/jest-dom"; // <-- Add this for matchers
 
 // Mock translation function to return the key
 jest.mock("i18next", () => ({
@@ -38,7 +38,7 @@ describe("Form component", () => {
 
     // Check if the back button is rendered
     const backButton = screen.getByTestId("backButton");
-    expect(backButton).toBeInTheDocument(); // Ensure button is rendered
+    expect(backButton).toBeInTheDocument();
   });
 
   it("calls the submitHandler when the form is submitted", async () => {
@@ -88,9 +88,6 @@ describe("Form component", () => {
 
     // Fire the submit event by clicking the submit button
     fireEvent.click(submitButton);
-
-    // Check if the submitHandler was called
-    // expect(mockSubmitHandler).toHaveBeenCalled();
   });
 
   it("calls the backHandler when the back button is clicked", () => {

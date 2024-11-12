@@ -27,7 +27,7 @@ describe("unit test for DeleteModal", () => {
 
   test("See if component render right.", () => {
     render(
-      <QueryProvider>
+      <QueryProvider>   
         <DeleteModal
           deleteModal={true}
           handleClose={mockCloseHandler}

@@ -16,17 +16,12 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { PlusOutlined } from "@ant-design/icons";
-import { useAppSelector } from "../Store/hooks";
 
 export default function CreatePost() {
   const { createProduct } = useProducts();
 
   const { t } = useTranslation();
   const router = useRouter();
-
-  const value = useAppSelector((state) => state.category);
-
-  console.log("FROM CREATE POST: ", value);
 
   const mutation = useMutation({
     mutationFn: createProduct,

@@ -6,6 +6,12 @@ const config: Config = {
   preset: "ts-jest",
   testEnvironment: "jsdom",
 
+  globals: {
+    "ts-jest": {
+      tsconfig: "tsconfig.jest.json",
+    },
+  },
+
   // Transform TypeScript and JSX files using ts-jest
   transform: {
     "^.+\\.(ts|tsx)$": "ts-jest",
@@ -22,7 +28,7 @@ const config: Config = {
     "\\.(css|less|scss|sass)$": "identity-obj-proxy",
     "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/__mocks__/fileMock.js",
   },
-  setupFilesAfterEnv: ["@testing-library/jest-dom"],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   // Automatically clear mock calls and instances between every test
   clearMocks: true,
 };
