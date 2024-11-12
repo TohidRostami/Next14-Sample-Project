@@ -4,6 +4,8 @@ import "./globals.css";
 import QueryProvider from "@/Provider/Provider";
 import ThemeProvider from "../Provider/ThemeProvider";
 import { CssBaseline } from "@mui/material";
+import StoreProvider from "../Store/StoreProvider";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +24,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider>
           <CssBaseline />
-          <QueryProvider>{children}</QueryProvider>
+          <StoreProvider>
+            <QueryProvider>{children}</QueryProvider>
+          </StoreProvider>
         </ThemeProvider>
       </body>
     </html>

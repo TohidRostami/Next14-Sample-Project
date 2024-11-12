@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "esnext",
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,9 +22,30 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/*": [
+        "./*"
+      ]
+    },
+    "types": [
+      "jest",
+      "node",
+      "@testing-library/jest-dom",
+      "cypress"
+    ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/ThemeProvider.tsط"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "components/ThemeProvider.ts",
+    "babel.config.js",
+    "testComponents/SampleTest.jsx",
+    "app/test/SampleTest.test.tsx",
+    "app/test/DeleteModal.test.tsx",
+    "**/*.*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

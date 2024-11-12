@@ -1,46 +1,68 @@
-import fields from "@/Data/fields";
-import Product from "@/Types/Product";
+import React from "react";
+import fields from "../Data/fields";
+import Product from "../Types/Product";
 import {
   Alert,
   Autocomplete,
   Box,
   Button,
   Checkbox,
-  CircularProgress,
   FormControlLabel,
   Grid,
   TextField,
 } from "@mui/material";
+
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { t } from "i18next";
-import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { z, ZodType } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { t } from "i18next";
+import { useAppSelector } from "../Store/hooks";
 
 const Form = ({
   submitHandler,
   backHandler,
-  categories,
   product,
   submitButtonText,
-  isLoading,
-  isError,
 }: {
   submitHandler: SubmitHandler<Product>;
   backHandler: () => void;
-  categories: string[] | undefined;
   product: Product | null;
   submitButtonText: string;
-  isLoading: boolean;
-  isError: boolean;
 }) => {
+  // const categories = useAppSelector((state) => state.category);
+
+  const categories = [
+    "electronics",
+    "jewelery",
+    "men's clothing",
+    "women's clothing",
+  ];
+  const schema: ZodType<Product> = z.object({
+    id: z.number(),
+    title: z.string().min(4).max(100),
+    price: z
+      .string()
+      .refine((val) => !isNaN(parseFloat(val)), {
+        message: "Price must be a number",
+      })
+      .transform((val) => parseFloat(val).toFixed(2)), // Ensure the price is transformed to a string,
+    category: z.string().min(4).max(100),
+    description: z.string().min(4).max(200),
+    image: z.string().min(4).max(100),
+  });
+
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<Product>();
+  } = useForm<Product>({
+    resolver: zodResolver(schema),
+  });
   const [visible, setVisible] = React.useState(true);
 
   const handleCheckboxChange = () => {
@@ -49,9 +71,7 @@ const Form = ({
 
   return (
     <>
-      {isLoading ? (
-        <CircularProgress />
-      ) : isError ? (
+      {categories.length === 0 ? (
         <Box>
           <Alert severity="error">{t("failedToFetchCategories")}</Alert>
           <Button
@@ -78,7 +98,7 @@ const Form = ({
                   <Grid item container spacing={2} key={field.id}>
                     <Grid item xs={5}>
                       <Autocomplete
-                        required={field.required}
+                        id="category-select"
                         defaultValue={product?.category}
                         disablePortal
                         options={categories as string[]}
@@ -86,10 +106,10 @@ const Form = ({
                           <TextField
                             {...params}
                             label={t("category")}
-                            key={field.id}
+                            required={field.required}
+                            {...register("category")}
                           />
                         )}
-                        {...register("category")}
                       />
                     </Grid>
                     <Grid item xs={7}>
@@ -110,26 +130,13 @@ const Form = ({
                     label={t(field.label)}
                     defaultValue={product?.[field.register]}
                     autoFocus={field.autoFocus}
-                    {...register(field.register, {
-                      required: field.required
-                        ? `${t(field.label)} is required`
-                        : false,
-                      minLength: field.minLength
-                        ? {
-                            value: field.minLength,
-                            message: `${t(field.label)} must be at least ${
-                              field.minLength
-                            } characters`,
-                          }
-                        : undefined,
-                    })}
-                    error={!!errors[field.register]}
-                    helperText={
-                      errors[field.register]
-                        ? errors[field.register]?.message
-                        : ""
-                    }
+                    {...register(field.register)}
                   />
+                  {errors[field.register] && (
+                    <span style={{ fontSize: "0.75rem", color: "red" }}>
+                      {errors[field.register]?.message}
+                    </span>
+                  )}
                 </Grid>
               );
             })}
@@ -157,12 +164,14 @@ const Form = ({
           >
             {t(submitButtonText)}
           </Button>
+
           <Button
             type="button"
             fullWidth
             variant="contained"
             sx={{ mt: 1, mb: 2 }}
             onClick={backHandler}
+            data-testid="backButton"
           >
             {t("back")}
           </Button>

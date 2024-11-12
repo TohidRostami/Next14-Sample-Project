@@ -9,10 +9,18 @@ import {
 import { t } from "i18next";
 import React, { useState } from "react";
 
+import {
+  FilterOutlined,
+  ReloadOutlined,
+  ArrowUpOutlined,
+  ArrowDownOutlined,
+} from "@ant-design/icons";
+
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import ReplayIcon from "@mui/icons-material/Replay";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+
 import Product from "@/Types/Product";
 
 const TableHeader = ({
@@ -72,12 +80,14 @@ const TableHeader = ({
                   }}
                 >
                   {column.render("Header")}
-                  <span>
+                  <span id="sort">
                     {column.isSorted ? (
                       column.isSortedDesc ? (
-                        <ArrowUpwardIcon sx={{ fontSize: 20 }} />
+                        // <ArrowUpwardIcon sx={{ fontSize: 20 }} />
+                        <ArrowUpOutlined />
                       ) : (
-                        <ArrowDownwardIcon sx={{ fontSize: 20 }} />
+                        // <ArrowDownwardIcon sx={{ fontSize: 20 }} />
+                        <ArrowDownOutlined />
                       )
                     ) : (
                       ""
@@ -112,11 +122,21 @@ const TableHeader = ({
                     justifyContent: "center",
                   }}
                 >
-                  <IconButton color="primary" onClick={handleApplyAllFilters}>
-                    <FilterAltIcon />
+                  <IconButton
+                    color="primary"
+                    onClick={handleApplyAllFilters}
+                    aria-label="Filter"
+                  >
+                    {/* <FilterAltIcon /> */}
+                    <FilterOutlined />
                   </IconButton>
-                  <IconButton color="primary" onClick={handleResetAllFilters}>
-                    <ReplayIcon />
+                  <IconButton
+                    color="primary"
+                    onClick={handleResetAllFilters}
+                    aria-label="Reset"
+                  >
+                    {/* <ReplayIcon /> */}
+                    <ReloadOutlined />
                   </IconButton>
                 </Box>
               </TableCell>

@@ -1,5 +1,6 @@
+import Product from "@/Types/Product";
 import FormFields from "../Types/FieldHeaders";
-const fields: FormFields[] = [
+const fields: FormFields<Product>[] = [
   {
     register: "title",
     id: "title",

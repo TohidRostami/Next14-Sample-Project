@@ -1,5 +1,5 @@
-export default interface FormFields {
-  register: "title" | "price" | "category" | "description" | "image" | "id";
+export default interface FormFields<T> {
+  register: keyof T;
   id: string;
   label: string;
   required: boolean;
