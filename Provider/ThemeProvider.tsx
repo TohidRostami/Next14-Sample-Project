@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 
 import i18n from "@/Translation/i18next";
+import ResponsiveAppBar from "@/components/ResponsiveAppBar";
 
 export default function useCustomTheme({
   children,
@@ -34,7 +35,7 @@ export default function useCustomTheme({
 
   return (
     <ThemeProvider theme={theme}>
-      <Box
+      {/* <Box
         sx={{
           width: "100%",
           borderBottom: "1px solid lightgrey",
@@ -57,7 +58,8 @@ export default function useCustomTheme({
           <MenuItem value="en">English</MenuItem>
           <MenuItem value="de">German</MenuItem>
         </Select>
-      </Box>
+      </Box> */}
+      <ResponsiveAppBar />
       {children}
     </ThemeProvider>
   );

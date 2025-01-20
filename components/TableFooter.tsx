@@ -39,12 +39,6 @@ const TableFooter = ({
         </Button>
       </Link>
 
-      <Link href="/sampleTest">
-        <Button type="button" variant="contained">
-          Sample Form
-        </Button>
-      </Link>
-
       <TablePagination
         component="div"
         count={dataCount}
