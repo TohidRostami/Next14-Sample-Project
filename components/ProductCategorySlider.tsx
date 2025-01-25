@@ -35,6 +35,18 @@ const ProductCategorySlider = () => {
 
   return (
     <Box sx={{ width: "100%", padding: 2, position: "relative" }}>
+      <Box sx={{ display: "flex", justifyContent: "center", marginBottom: 2 }}>
+        <Typography
+          style={{
+            fontFamily: "Permanent Marker, cursive",
+            fontWeight: "bold",
+            fontSize: "1.5rem",
+            color: "black",
+          }}
+        >
+          Categories
+        </Typography>
+      </Box>
       {/* Slider container */}
       <Box
         sx={{
