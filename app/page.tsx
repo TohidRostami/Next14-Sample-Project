@@ -1,10 +1,10 @@
 import styles from "./page.module.css";
-import ProductTable from "../components/ProductTable";
+import MainComponent from "@/components/MainComponent";
 
 export default function Home() {
   return (
     <main className={styles.main}>
-      <ProductTable />
+      <MainComponent/>
     </main>
   );
 }

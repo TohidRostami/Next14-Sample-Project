@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -22,16 +19,9 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     },
-    "types": [
-      "jest",
-      "node",
-      "@testing-library/jest-dom",
-      "cypress"
-    ]
+    "types": ["jest", "node", "@testing-library/jest-dom", "cypress"]
   },
   "include": [
     "next-env.d.ts",
@@ -45,7 +35,5 @@
     "app/test/DeleteModal.test.tsx",
     "**/*.*"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
